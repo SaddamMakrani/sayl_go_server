@@ -30,6 +30,7 @@ func HttpRequest(method string, endPoint string, body any) (response []byte, err
 	}
 	// Set the Shopify access token in the request headers
 	req.Header.Set("X-Shopify-Access-Token", config.Config("ADMIN_TOKEN"))
+	req.Header.Set("Content-Type", "application/json")
 
 	// Send the request
 	resp, err := client.Do(req)
@@ -45,7 +46,6 @@ func HttpRequest(method string, endPoint string, body any) (response []byte, err
 		fmt.Println("Error reading the response:", err)
 		return response, err
 	}
-
 	return response, err
 
 }

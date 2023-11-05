@@ -24,3 +24,29 @@ func GetProducts(c *fiber.Ctx) error {
 
 	return c.JSON(product)
 }
+
+func CreateUser(c *fiber.Ctx) error {
+	var user structs.User
+
+	err := json.Unmarshal(c.Request().Body(), &user)
+	if err != nil {
+		return err
+	}
+	customer := structs.Customer{
+		User: user,
+	}
+
+	responseData, err := util.HttpRequest("POST", consts.CREATE_USER, customer)
+	if err != nil {
+		fmt.Println("Error reading the response:", err)
+		return err
+	}
+
+	var userData *structs.CreatedUser
+	err = json.NewDecoder(bytes.NewBuffer(responseData)).Decode(&userData)
+	if err != nil {
+		fmt.Println("Error while decoding response:", err)
+		return err
+	}
+	return c.JSON(userData)
+}
