@@ -13,7 +13,7 @@ func setupRoutes(app *fiber.App) {
 	app.Post("/cart/remove/:mobile_number", controller.RemoveItemCart)
 	app.Get("/cart/:mobile_number", controller.GetUserCart)
 	app.Post("/order/create/:mobile_number", controller.CreateOrder)
-	app.Get("/order/utm", controller.GetOrcerFromUtmSource)
+	app.Get("/order/utm", controller.GetOrderFromUtmSource)
 }
 
 func main() {

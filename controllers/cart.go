@@ -32,6 +32,13 @@ func CreateCart(c *fiber.Ctx) error {
 		})
 	}
 
+	if item.Quantity < 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid request body",
+			"Error":   "Quantity should not be 0",
+		})
+	}
+
 	// Add item to the user's cart
 	cart.Items = append(cart.Items, item)
 
@@ -67,7 +74,7 @@ func RemoveItemCart(c *fiber.Ctx) error {
 	for _, item := range cart.Items {
 		if item.VariantID == itemToRemove.VariantID {
 			found = true
-			if item.Quantity > itemToRemove.Quantity {
+			if item.Quantity > 0 && item.Quantity > itemToRemove.Quantity {
 				item.Quantity -= itemToRemove.Quantity
 				updatedItems = append(updatedItems, item)
 			}
@@ -165,7 +172,7 @@ func CreateOrder(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(shopifyOrderResponse)
 }
 
-func GetOrcerFromUtmSource(c *fiber.Ctx) error {
+func GetOrderFromUtmSource(c *fiber.Ctx) error {
 	paramValue := c.Query("utm_source")
 	fmt.Println(consts.CREATE_ORDER+consts.GET_ORDER_BY_UTM+paramValue, "consts.CREATE_ORDER+consts.GET_ORDER_BY_UTM+paramValue")
 	resp, err := util.HttpRequest("GET", consts.CREATE_ORDER+consts.GET_ORDER_BY_UTM+paramValue, nil)
