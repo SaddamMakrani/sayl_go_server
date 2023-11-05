@@ -11,10 +11,15 @@ type Product struct {
 }
 
 type Variant struct {
-	ID        int64  `json:"id"`
-	ProductID int64  `json:"product_id"`
-	Title     string `json:"title"`
-	Price     string `json:"price"`
+	ID              int64  `json:"id"`
+	ProductID       int64  `json:"product_id"`
+	Title           string `json:"title"`
+	Price           string `json:"price"`
+	InventoryItemId int64  `json:"inventory_item_id"`
+}
+
+type VariantResponse struct {
+	Variant Variant `json:"variant"`
 }
 
 type Customer struct {
@@ -51,4 +56,44 @@ type CreateUser struct {
 	EmailMarketingConsent string `json:"email_marketing_consent"`
 	SMSMarketingConsent   string `json:"sms_marketing_consent"`
 	AdminGraphQLAPIID     string `json:"admin_graphql_api_id"`
+}
+
+type CartItem struct {
+	VariantID int64 `json:"variant_id"`
+	Quantity  int   `json:"quantity"`
+}
+type ViewCartItem struct {
+	VariantID    int64  `json:"variant_id"`
+	VariantTitle string `json:"variant_title"`
+}
+
+type UserCart struct {
+	Items []CartItem
+}
+
+type OrderResponse struct {
+	OrderID string `json:"order_id"`
+}
+
+type ShopifyOrderRequest struct {
+	LineItems []CartItem `json:"line_items"`
+}
+
+type ShopifyOrder struct {
+	Order Order `json:"order"`
+}
+
+type Order struct {
+	ID                    int64  `json:"id"`
+	AdminGraphQLAPIID     string `json:"admin_graphql_api_id"`
+	AppID                 int64  `json:"app_id"`
+	BrowserIP             string `json:"browser_ip"`
+	BuyerAcceptsMarketing bool   `json:"buyer_accepts_marketing"`
+	CancelReason          string `json:"cancel_reason"`
+	CancelledAt           string `json:"cancelled_at"`
+	CartToken             string `json:"cart_token"`
+	CheckoutID            string `json:"checkout_id"`
+}
+type ShopifyOrderResponseByUtm struct {
+	Order []Order `json:"orders"`
 }
