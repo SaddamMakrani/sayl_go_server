@@ -160,6 +160,9 @@ func CreateOrder(c *fiber.Ctx) error {
 		return err
 	}
 
+	// Clear user's cart
+	delete(userCarts, mobileNumber)
+
 	// Parse the Shopify order response to get the order ID
 	var shopifyOrderResponse structs.ShopifyOrder
 
